@@ -2,7 +2,9 @@ import tkinter as tk
 
 
 window = tk.Tk()
-label = tk.Label(window, text="Message")
+# grössi definiere
+window.geometry("300x500")
+label = tk.Label(window, text="Message", )
 entry = tk.Entry(window)
 
 label2 = tk.Label(window, text="Verschiebung")
@@ -73,13 +75,19 @@ def encrypt_message():
     encrypted_message = caesarVerschlusselung(message, verschiebung)
     encrypted_result.configure(text=encrypted_message)
 
-
+# nur decrypte wenn de encrypted im message feld staht
 def decrypt_message():
     message = entry.get()
     verschiebung = int(entry2.get())
     decrypted_message = caesarVerschlusselung_rev(message, verschiebung)
     decrypted_result.configure(text=decrypted_message)
 
+# reverse tued de text wo scho encrypted worde isch decrypte
+def reverse_message():
+    message = encrypted_result.cget("text")
+    verschiebung = int(entry2.get())
+    decrypted_message = caesarVerschlusselung_rev(message, verschiebung)
+    decrypted_result.configure(text=decrypted_message)
 
 encrypt_label = tk.Label(window, text="Encrypted Message:")
 encrypted_result = tk.Label(window, text="")
@@ -90,22 +98,23 @@ decrypted_result = tk.Label(window, text="")
 encrypt_button = tk.Button(window, text="Encrypt", command=encrypt_message)
 decrypt_button = tk.Button(window, text="Decrypt", command=decrypt_message)
 
+reverse_button = tk.Button(window, text="Reverse", command=reverse_message)
+
 label.pack()
 entry.pack()
 label2.pack()
 entry2.pack()
 encrypt_button.pack()
 decrypt_button.pack()
+reverse_button.pack()
 encrypt_label.pack()
 encrypted_result.pack()
 decrypt_label.pack()
 decrypted_result.pack()
 
 window.mainloop()
-
-
 # Erjon: de input vo de zahl wird in 3 teil ufgteilt
-part1, part2, part3 = entry2.split(' ')
+part1, part2, part3 = entry2
 
 key1 = int(part1)
 key2 = int(part2)
