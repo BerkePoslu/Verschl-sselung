@@ -1,14 +1,5 @@
 import tkinter as tk
-
-
-window = tk.Tk()
-# grössi definiere
-window.geometry("300x500")
-label = tk.Label(window, text="Message", )
-entry = tk.Entry(window)
-
-label2 = tk.Label(window, text="Verschiebung")
-entry2 = tk.Entry(window)
+import tkinter.messagebox as messagebox
 
 alphabet = "abcdefghijklmnopqrstuvwxyzäöü"
 
@@ -69,25 +60,18 @@ def caesarVerschlusselung_rev(string, verschiebung):
     return modified_string
 
 # encrypte knopf funktion
+# 1.0 isch in tkinter erste character in tkinter und end-1c isch character bevor newline /n
 def encrypt_message():
-    message = entry.get()
-    verschiebung = int(entry2.get())
-
-    # Erjon: will wend zahl grösser isch als ahzal symbol im alphabet 
-    #        tuets die zahl um 29(ahzahl symbol im alphabet) verchlinere 
-    #        dammit eusi funktion wieder ghat
-
-    if verschiebung >= 29:
-        while verschiebung >= 29:
-            verschiebung-=29   
-
+    message = entry.get("1.0", "end-1c")
+    verschiebung = int(entry2.get("1.0", "end-1c"))
     encrypted_message = caesarVerschlusselung(message, verschiebung)
     encrypted_result.configure(text=encrypted_message)
 
+
 # nur decrypte wenn de encrypted im message feld staht
 def decrypt_message():
-    message = entry.get()
-    verschiebung = int(entry2.get())
+    message = entry.get("1.0", "end-1c")
+    verschiebung = int(entry2.get("1.0", "end-1c"))
     decrypted_message = caesarVerschlusselung_rev(message, verschiebung)
     decrypted_result.configure(text=decrypted_message)
 
@@ -99,27 +83,64 @@ def reverse_message():
     decrypted_message = caesarVerschlusselung_rev(message, verschiebung)
     decrypted_result.configure(text=decrypted_message)
 
-encrypt_label = tk.Label(window, text="Encrypted Message:")
-encrypted_result = tk.Label(window, text="")
+# Set the colors for the GUI
+primary_color = "#293E4D"
+secondary_color = "#F0F0F0"
+button_color = "#447DBA"
+button_text_color = "#FFFFFF"
 
-decrypt_label = tk.Label(window, text="Decrypted Message:")
-decrypted_result = tk.Label(window, text="")
+# Create the Tkinter window
+window = tk.Tk()
+window.title("Tkinter GUI")
+window.geometry("700x700")
+window.configure(bg=primary_color)
 
-encrypt_button = tk.Button(window, text="Encrypt", command=encrypt_message)
-decrypt_button = tk.Button(window, text="Decrypt", command=decrypt_message)
+# Create and configure labels
+label = tk.Label(window, text="Message", bg=primary_color, fg=secondary_color, font=("Arial", 12))
+label.grid(row=0, column=0, padx=10, pady=10, sticky="e")
 
-reverse_button = tk.Button(window, text="Reverse", command=reverse_message)
+label2 = tk.Label(window, text="Verschiebung", bg=primary_color, fg=secondary_color, font=("Arial", 12))
+label2.grid(row=1, column=0, padx=10, pady=10, sticky="e")
 
-label.pack()
-entry.pack()
-label2.pack()
-entry2.pack()
-encrypt_button.pack()
-decrypt_button.pack()
-reverse_button.pack()
-encrypt_label.pack()
-encrypted_result.pack()
-decrypt_label.pack()
-decrypted_result.pack()
+encrypt_label = tk.Label(window, text="Encrypted Message:", bg=primary_color, fg=secondary_color, font=("Arial", 12))
+encrypt_label.grid(row=3, column=0, padx=10, pady=10, sticky="e")
+
+decrypt_label = tk.Label(window, text="Decrypted Message:", bg=primary_color, fg=secondary_color, font=("Arial", 12))
+decrypt_label.grid(row=5, column=0, padx=10, pady=10, sticky="e")
+
+# Create and configure entry fields
+entry = tk.Text(window, width=30, height=5, font=("Arial", 12))
+entry.grid(row=0, column=1, padx=10, pady=10)
+
+entry2 = tk.Text(window, width=3, height=1, font=("Arial", 12))
+entry2.grid(row=1, column=1, padx=10, pady=10)
+
+# Create buttons
+encrypt_button = tk.Button(window, text="Encrypt", command=encrypt_message, bg=button_color, fg=button_text_color, font=("Arial", 12))
+encrypt_button.grid(row=2, column=0, columnspan=2, padx=10, pady=10, sticky="we")
+
+decrypt_button = tk.Button(window, text="Decrypt", command=decrypt_message, bg=button_color, fg=button_text_color, font=("Arial", 12))
+decrypt_button.grid(row=4, column=0, columnspan=2, padx=10, pady=10, sticky="we")
+
+
+# Create and configure result labels
+# Create a bigger Text widget for encrypted result
+encrypted_result = tk.Label(window, width=40, height=5, bg=primary_color, fg=secondary_color, font=("Arial", 12))
+encrypted_result.grid(row=3, column=1, padx=10, pady=10, sticky="w")
+
+# Create a bigger Text widget for decrypted result
+decrypted_result = tk.Label(window, width=40, height=5, bg=primary_color, fg=secondary_color, font=("Arial", 12))
+decrypted_result.grid(row=5, column=1, padx=10, pady=10, sticky="w")
+
+# Function to copy encrypted text to the message field
+def copy_encrypted_to_message():
+    encrypted_text = encrypted_result["text"]
+    entry.delete("1.0", "end")
+    entry.insert("1.0", encrypted_text)
+    messagebox.showinfo("Copy Successful", "Encrypted text copied to message field.")
+# Create a button to copy encrypted text to the message field
+copy_button = tk.Button(window, text="Copy", command=copy_encrypted_to_message, bg=button_color, fg=button_text_color, font=("Arial", 12))
+copy_button.grid(row=3, column=2, padx=10, pady=10, sticky="w")
+
 
 window.mainloop()
