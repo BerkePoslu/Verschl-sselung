@@ -117,7 +117,7 @@ decrypt_label.grid(row=5, column=0, padx=10, pady=10, sticky="e")
 entry = tk.Text(window, width=30, height=5, font=("Arial", 12))
 entry.grid(row=0, column=1, padx=10, pady=10)
 
-entry2 = tk.Text(window, width=3, height=1, font=("Arial", 12))
+entry2 = tk.Text(window, width=30, height=1, font=("Arial", 12))
 entry2.grid(row=1, column=1, padx=10, pady=10)
 
 
