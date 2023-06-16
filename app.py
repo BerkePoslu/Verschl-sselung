@@ -60,10 +60,15 @@ def caesarVerschlusselung_rev(string, verschiebung):
     return modified_string
 
 # encrypte knopf funktion
-# 1.0 isch in tkinter erste character in tkinter und end-1c isch character bevor newline /n
+# 1.0 isch in tkinter erste character und end-1c isch de character bevor newline /n
 def encrypt_message():
     message = entry.get("1.0", "end-1c")
     verschiebung = int(entry2.get("1.0", "end-1c"))
+    print(verschiebung)
+    if verschiebung > 29:
+        messagebox.showinfo("Error", "Cannot put number over 29.")
+        entry2.delete(0, tk.END)
+        entry2.insert(0, "29")
     encrypted_message = caesarVerschlusselung(message, verschiebung)
     encrypted_result.configure(text=encrypted_message)
 
@@ -114,6 +119,7 @@ entry.grid(row=0, column=1, padx=10, pady=10)
 
 entry2 = tk.Text(window, width=3, height=1, font=("Arial", 12))
 entry2.grid(row=1, column=1, padx=10, pady=10)
+
 
 # Create buttons
 encrypt_button = tk.Button(window, text="Encrypt", command=encrypt_message, bg=button_color, fg=button_text_color, font=("Arial", 12))
