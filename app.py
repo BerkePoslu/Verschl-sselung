@@ -72,6 +72,15 @@ def caesarVerschlusselung_rev(string, verschiebung):
 def encrypt_message():
     message = entry.get()
     verschiebung = int(entry2.get())
+
+    # Erjon: will wend zahl grösser isch als ahzal symbol im alphabet 
+    #        tuets die zahl um 29(ahzahl symbol im alphabet) verchlinere 
+    #        dammit eusi funktion wieder ghat
+
+    if verschiebung >= 29:
+        while verschiebung >= 29:
+            verschiebung-=29   
+
     encrypted_message = caesarVerschlusselung(message, verschiebung)
     encrypted_result.configure(text=encrypted_message)
 
@@ -114,35 +123,3 @@ decrypt_label.pack()
 decrypted_result.pack()
 
 window.mainloop()
-# Erjon: de input vo de zahl wird in 3 teil ufgteilt
-part1, part2, part3 = entry2
-
-key1 = int(part1)
-key2 = int(part2)
-key3 = int(part3)
-
-# Erjon: will wend zahl grösser isch als ahzal symbol im alphabet 
-#        tuets die zahl um 29(ahzahl symbol im alphabet) verchlinere 
-#        dammit eusi funktion wieder ghat
-
-
-if key1 >= 29:
-    while key1 >= 29:
-        key1-=29       
-
-if key2 > 29:
-    while key2 >= 29:
-        key2-=29 
-
-if key3 > 29:
-    while key3 >= 29:
-        key3-=29
-
-# Erjon: da tuen ich dafür sorge das message mehrmals 
-#        durch die funktion ghat mit dene 3 separate teil vo de verschlüsselig
-
-test_string1 = caesarVerschlusselung(entry, key1)
-test_string2 = caesarVerschlusselung(test_string1, key2)
-test_string3 = caesarVerschlusselung(test_string2, key3)
-
-print(test_string3)
