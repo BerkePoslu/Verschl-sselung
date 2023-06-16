@@ -68,7 +68,7 @@ def caesarVerschlusselung_rev(string, verschiebung):
 
     return modified_string
 
-
+# encrypte knopf funktion
 def encrypt_message():
     message = entry.get()
     verschiebung = int(entry2.get())
@@ -83,6 +83,7 @@ def decrypt_message():
     decrypted_result.configure(text=decrypted_message)
 
 # reverse tued de text wo scho encrypted worde isch decrypte
+# wird meh zum teste benutzt
 def reverse_message():
     message = encrypted_result.cget("text")
     verschiebung = int(entry2.get())
