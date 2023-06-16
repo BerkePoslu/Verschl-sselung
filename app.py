@@ -65,10 +65,9 @@ def encrypt_message():
     message = entry.get("1.0", "end-1c")
     verschiebung = int(entry2.get("1.0", "end-1c"))
     print(verschiebung)
-    if verschiebung > 29:
-        messagebox.showinfo("Error", "Cannot put number over 29.")
-        entry2.delete(0, tk.END)
-        entry2.insert(0, "29")
+    if verschiebung >= 29:
+        while verschiebung >= 29:
+            verschiebung-=29
     encrypted_message = caesarVerschlusselung(message, verschiebung)
     encrypted_result.configure(text=encrypted_message)
 
