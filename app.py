@@ -1,8 +1,8 @@
 import tkinter as tk
-import tkinter.messagebox as messagebox
 
 alphabet = "abcdefghijklmnopqrstuvwxyzäöü"
 
+mode = False
 
 # en kurze funktion für de caesar verschlüsselig
 def caesarVerschlusselung(string, verschiebung):
@@ -34,6 +34,7 @@ def caesarVerschlusselung(string, verschiebung):
     return modified_string
 
 
+
 def caesarVerschlusselung_rev(string, verschiebung):
     shifted_alphabet = alphabet[verschiebung:] + alphabet[:verschiebung]
     # mir mached alles glich eif reverse
@@ -59,29 +60,111 @@ def caesarVerschlusselung_rev(string, verschiebung):
 
     return modified_string
 
+def TripleDataEncryptionStandards(String, Verschiebung):
+
+    message = entry.get("1.0", "end-1c")
+    verschiebung = entry2.get("1.0", "end-1c")
+    
+    # Erjon: de input vo de zahl wird in 3 teil ufgteilt
+    part1, part2, part3 = verschiebung.split(' ')
+
+    key1 = int(part1)
+    key2 = int(part2)
+    key3 = int(part3)
+
+    # Erjon: will wend zahl grösser isch als ahzal symbol im alphabet 
+    #        tuets die zahl um 29(ahzahl symbol im alphabet) verchlinere 
+    #        dammit eusi funktion wieder ghat
+
+
+    if key1 >= 29:
+        while key1 >= 29:
+            key1-=29       
+
+    if key2 > 29:
+        while key2 >= 29:
+            key2-=29 
+
+    if key3 > 29:
+        while key3 >= 29:
+            key3-=29
+
+    test_string1 = caesarVerschlusselung(message, key1)
+    test_string2 = caesarVerschlusselung(test_string1, key2)
+    test_string3 = caesarVerschlusselung(test_string2, key3)
+
+    return test_string3
+
+def TripleDataEncryptionStandards_rev(String, Verschiebung):
+
+    message = entry.get("1.0", "end-1c")
+    verschiebung = entry2.get("1.0", "end-1c")
+    
+    # Erjon: de input vo de zahl wird in 3 teil ufgteilt
+    part1, part2, part3 = verschiebung.split(' ')
+
+    key1 = int(part1)
+    key2 = int(part2)
+    key3 = int(part3)
+
+    # Erjon: will wend zahl grösser isch als ahzal symbol im alphabet 
+    #        tuets die zahl um 29(ahzahl symbol im alphabet) verchlinere 
+    #        dammit eusi funktion wieder ghat
+
+
+    if key1 >= 29:
+        while key1 >= 29:
+            key1-=29       
+
+    if key2 > 29:
+        while key2 >= 29:
+            key2-=29 
+
+    if key3 > 29:
+        while key3 >= 29:
+            key3-=29
+
+    test_string1 = caesarVerschlusselung_rev(message, key1)
+    test_string2 = caesarVerschlusselung_rev(test_string1, key2)
+    test_string3 = caesarVerschlusselung_rev(test_string2, key3)
+
+    return test_string3
+
 # encrypte knopf funktion
 # 1.0 isch in tkinter erste character und end-1c isch de character bevor newline /n
 def encrypt_message():
     message = entry.get("1.0", "end-1c")
-    verschiebung = int(entry2.get("1.0", "end-1c"))
-    # Erjon: Das sorgt dafür das de Key nie grösser als 29 isch will denn verschiebig nöd ghat. 
-    if verschiebung >= 29:
-        while verschiebung >= 29:
-            verschiebung-=29
-    encrypted_message = caesarVerschlusselung(message, verschiebung)
+    if mode == True:
+        verschiebung = int(entry2.get("1.0", "end-1c"))
+        # Erjon: Das sorgt dafür das de Key nie grösser als 29 isch will denn verschiebig nöd ghat. 
+        if verschiebung >= 29:
+            while verschiebung >= 29:
+                verschiebung-=29
+        encrypted_message = caesarVerschlusselung(message, verschiebung)
+    else:
+        verschiebung = entry2.get("1.0", "end-1c")
+        # Erjon: Das sorgt dafür das de Key nie grösser als 29 isch will denn verschiebig nöd ghat. 
+        encrypted_message = TripleDataEncryptionStandards(message, verschiebung)
     encrypted_result.configure(text=encrypted_message)
+
 
 
 # nur decrypte wenn de encrypted im message feld staht
 def decrypt_message():
     message = entry.get("1.0", "end-1c")
-    verschiebung = int(entry2.get("1.0", "end-1c"))
-    # Erjon: Das sorgt dafür das de Key nie grösser als 29 isch will denn verschiebig nöd ghat. 
-    if verschiebung >= 29:
-        while verschiebung >= 29:
-            verschiebung-=29
-    decrypted_message = caesarVerschlusselung_rev(message, verschiebung)
+    if mode == True:
+        verschiebung = int(entry2.get("1.0", "end-1c"))
+        # Erjon: Das sorgt dafür das de Key nie grösser als 29 isch will denn verschiebig nöd ghat. 
+        if verschiebung >= 29:
+            while verschiebung >= 29:
+                verschiebung-=29
+        decrypted_message = caesarVerschlusselung_rev(message, verschiebung)
+    else:
+        verschiebung = entry2.get("1.0", "end-1c")
+        # Erjon: Das sorgt dafür das de Key nie grösser als 29 isch will denn verschiebig nöd ghat. 
+        decrypted_message = TripleDataEncryptionStandards_rev(message, verschiebung)
     decrypted_result.configure(text=decrypted_message)
+
 
 # Erjon: Bestimmt dfrabene fürs GUI
 primary_color = "#293E4D"
@@ -137,7 +220,6 @@ def copy_encrypted_to_message():
     encrypted_text = encrypted_result["text"]
     entry.delete("1.0", "end")
     entry.insert("1.0", encrypted_text)
-    messagebox.showinfo("Copy Successful", "Encrypted text copied to message field.")
 # Create a button to copy encrypted text to the message field
 copy_button = tk.Button(window, text="Copy", command=copy_encrypted_to_message, bg=button_color, fg=button_text_color, font=("Arial", 12))
 copy_button.grid(row=3, column=2, padx=10, pady=10, sticky="w")
