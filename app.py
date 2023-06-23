@@ -64,7 +64,7 @@ def caesarVerschlusselung_rev(string, verschiebung):
 def encrypt_message():
     message = entry.get("1.0", "end-1c")
     verschiebung = int(entry2.get("1.0", "end-1c"))
-    print(verschiebung)
+    # Erjon: Das sorgt dafür das de Key nie grösser als 29 isch will denn verschiebig nöd ghat. 
     if verschiebung >= 29:
         while verschiebung >= 29:
             verschiebung-=29
@@ -76,30 +76,26 @@ def encrypt_message():
 def decrypt_message():
     message = entry.get("1.0", "end-1c")
     verschiebung = int(entry2.get("1.0", "end-1c"))
+    # Erjon: Das sorgt dafür das de Key nie grösser als 29 isch will denn verschiebig nöd ghat. 
+    if verschiebung >= 29:
+        while verschiebung >= 29:
+            verschiebung-=29
     decrypted_message = caesarVerschlusselung_rev(message, verschiebung)
     decrypted_result.configure(text=decrypted_message)
 
-# reverse tued de text wo scho encrypted worde isch decrypte
-# wird meh zum teste benutzt
-def reverse_message():
-    message = encrypted_result.cget("text")
-    verschiebung = int(entry2.get())
-    decrypted_message = caesarVerschlusselung_rev(message, verschiebung)
-    decrypted_result.configure(text=decrypted_message)
-
-# Set the colors for the GUI
+# Erjon: Bestimmt dfrabene fürs GUI
 primary_color = "#293E4D"
 secondary_color = "#F0F0F0"
 button_color = "#447DBA"
 button_text_color = "#FFFFFF"
 
-# Create the Tkinter window
+# Erjon: Machts Window fürs tkInter
 window = tk.Tk()
 window.title("Tkinter GUI")
 window.geometry("700x700")
 window.configure(bg=primary_color)
 
-# Create and configure labels
+# Erjon: Erstellt Konfigurations Labels
 label = tk.Label(window, text="Message", bg=primary_color, fg=secondary_color, font=("Arial", 12))
 label.grid(row=0, column=0, padx=10, pady=10, sticky="e")
 
@@ -112,7 +108,7 @@ encrypt_label.grid(row=3, column=0, padx=10, pady=10, sticky="e")
 decrypt_label = tk.Label(window, text="Decrypted Message:", bg=primary_color, fg=secondary_color, font=("Arial", 12))
 decrypt_label.grid(row=5, column=0, padx=10, pady=10, sticky="e")
 
-# Create and configure entry fields
+# Erjon: Erstehlt Konfigurations eingabe Felder
 entry = tk.Text(window, width=30, height=5, font=("Arial", 12))
 entry.grid(row=0, column=1, padx=10, pady=10)
 
@@ -120,7 +116,7 @@ entry2 = tk.Text(window, width=30, height=1, font=("Arial", 12))
 entry2.grid(row=1, column=1, padx=10, pady=10)
 
 
-# Create buttons
+# Erjon: Erstellt Knöpf
 encrypt_button = tk.Button(window, text="Encrypt", command=encrypt_message, bg=button_color, fg=button_text_color, font=("Arial", 12))
 encrypt_button.grid(row=2, column=0, columnspan=2, padx=10, pady=10, sticky="we")
 
@@ -128,12 +124,11 @@ decrypt_button = tk.Button(window, text="Decrypt", command=decrypt_message, bg=b
 decrypt_button.grid(row=4, column=0, columnspan=2, padx=10, pady=10, sticky="we")
 
 
-# Create and configure result labels
-# Create a bigger Text widget for encrypted result
+# Feld für das Ergebnis bi Encryption
 encrypted_result = tk.Label(window, width=40, height=5, bg=primary_color, fg=secondary_color, font=("Arial", 12))
 encrypted_result.grid(row=3, column=1, padx=10, pady=10, sticky="w")
 
-# Create a bigger Text widget for decrypted result
+# Feld für das Decryption bi Encryption
 decrypted_result = tk.Label(window, width=40, height=5, bg=primary_color, fg=secondary_color, font=("Arial", 12))
 decrypted_result.grid(row=5, column=1, padx=10, pady=10, sticky="w")
 
