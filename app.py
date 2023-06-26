@@ -142,8 +142,7 @@ def encrypt_message():
                 verschiebung-=29
         encrypted_message = caesarVerschlusselung(message, verschiebung)
     else:
-        verschiebung = entry2.get("1.0", "end-1c")
-        # Erjon: Das sorgt dafür das de Key nie grösser als 29 isch will denn verschiebig nöd ghat. 
+        verschiebung = entry2.get("1.0", "end-1c") 
         encrypted_message = TripleDataEncryptionStandards(message, verschiebung)
     encrypted_result.configure(text=encrypted_message)
 
@@ -161,7 +160,6 @@ def decrypt_message():
         decrypted_message = caesarVerschlusselung_rev(message, verschiebung)
     else:
         verschiebung = entry2.get("1.0", "end-1c")
-        # Erjon: Das sorgt dafür das de Key nie grösser als 29 isch will denn verschiebig nöd ghat. 
         decrypted_message = TripleDataEncryptionStandards_rev(message, verschiebung)
     decrypted_result.configure(text=decrypted_message)
 
@@ -195,7 +193,7 @@ decrypt_label.grid(row=5, column=0, padx=10, pady=10, sticky="e")
 entry = tk.Text(window, width=30, height=5, font=("Arial", 12))
 entry.grid(row=0, column=1, padx=10, pady=10)
 
-entry2 = tk.Text(window, width=30, height=1, font=("Arial", 12))
+entry2 = tk.Text(window, width=30, height=3, font=("Arial", 12))
 entry2.grid(row=1, column=1, padx=10, pady=10)
 
 
@@ -220,9 +218,17 @@ def copy_encrypted_to_message():
     encrypted_text = encrypted_result["text"]
     entry.delete("1.0", "end")
     entry.insert("1.0", encrypted_text)
-# Create a button to copy encrypted text to the message field
+
+def copy_decrypted_to_message():
+    decrypted_text = decrypted_result["text"]
+    entry.delete("1.0", "end")
+    entry.insert("1.0", decrypted_text)
+# Erställt en Knopf zum de text ufs feld obe zum witer bruche. 
 copy_button = tk.Button(window, text="Copy", command=copy_encrypted_to_message, bg=button_color, fg=button_text_color, font=("Arial", 12))
 copy_button.grid(row=3, column=2, padx=10, pady=10, sticky="w")
+
+copy_button = tk.Button(window, text="Copy", command=copy_decrypted_to_message, bg=button_color, fg=button_text_color, font=("Arial", 12))
+copy_button.grid(row=5, column=2, padx=10, pady=10, sticky="w")
 
 
 window.mainloop()
