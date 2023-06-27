@@ -1,8 +1,12 @@
 import tkinter as tk
+from tkinter import *
 
 alphabet = "abcdefghijklmnopqrstuvwxyzäöü"
 
-mode = False
+# TDES oder Caesar switch-boolean
+caesar_mode = True
+
+### Verschluesslungsfunktionen
 
 # en kurze funktion für de caesar verschlüsselig
 def caesarVerschlusselung(string, verschiebung):
@@ -34,7 +38,7 @@ def caesarVerschlusselung(string, verschiebung):
     return modified_string
 
 
-
+# Caesar Verschluesselung-entschluessung
 def caesarVerschlusselung_rev(string, verschiebung):
     shifted_alphabet = alphabet[verschiebung:] + alphabet[:verschiebung]
     # mir mached alles glich eif reverse
@@ -60,6 +64,7 @@ def caesarVerschlusselung_rev(string, verschiebung):
 
     return modified_string
 
+# TDES Verschluesselung
 def TripleDataEncryptionStandards(String, Verschiebung):
 
     message = entry.get("1.0", "end-1c")
@@ -95,6 +100,7 @@ def TripleDataEncryptionStandards(String, Verschiebung):
 
     return test_string3
 
+# TDES Verschluesselung-entschluesselung
 def TripleDataEncryptionStandards_rev(String, Verschiebung):
 
     message = entry.get("1.0", "end-1c")
@@ -130,11 +136,14 @@ def TripleDataEncryptionStandards_rev(String, Verschiebung):
 
     return test_string3
 
-# encrypte knopf funktion
+### knopf funktione
+
+## encrypt funktion
+ 
 # 1.0 isch in tkinter erste character und end-1c isch de character bevor newline /n
 def encrypt_message():
     message = entry.get("1.0", "end-1c")
-    if mode == True:
+    if caesar_mode == True:
         verschiebung = int(entry2.get("1.0", "end-1c"))
         # Erjon: Das sorgt dafür das de Key nie grösser als 29 isch will denn verschiebig nöd ghat. 
         if verschiebung >= 29:
@@ -148,10 +157,11 @@ def encrypt_message():
 
 
 
-# nur decrypte wenn de encrypted im message feld staht
+## decrypt funktion
+
 def decrypt_message():
     message = entry.get("1.0", "end-1c")
-    if mode == True:
+    if caesar_mode == True:
         verschiebung = int(entry2.get("1.0", "end-1c"))
         # Erjon: Das sorgt dafür das de Key nie grösser als 29 isch will denn verschiebig nöd ghat. 
         if verschiebung >= 29:
@@ -163,6 +173,19 @@ def decrypt_message():
         decrypted_message = TripleDataEncryptionStandards_rev(message, verschiebung)
     decrypted_result.configure(text=decrypted_message)
 
+## switch menu funktion
+
+# *args will mir tuend unbestimmti ahzahl vo arguments verschicke 
+def switch_modes(*args):
+    global caesar_mode
+    selected_option = switch_variable.get()
+    if selected_option == "TDES":
+        caesar_mode=False
+    else:
+        caesar_mode=True
+
+
+### GUI
 
 # Erjon: Bestimmt dfrabene fürs GUI
 primary_color = "#293E4D"
@@ -170,10 +193,10 @@ secondary_color = "#F0F0F0"
 button_color = "#447DBA"
 button_text_color = "#FFFFFF"
 
-# Erjon: Machts Window fürs tkInter
+# Erjon: Machts Window fürs tkinter
 window = tk.Tk()
 window.title("Tkinter GUI")
-window.geometry("700x700")
+window.geometry("800x800")
 window.configure(bg=primary_color)
 
 # Erjon: Erstellt Konfigurations Labels
@@ -230,5 +253,15 @@ copy_button.grid(row=3, column=2, padx=10, pady=10, sticky="w")
 copy_button = tk.Button(window, text="Copy", command=copy_decrypted_to_message, bg=button_color, fg=button_text_color, font=("Arial", 12))
 copy_button.grid(row=5, column=2, padx=10, pady=10, sticky="w")
 
+# Mode switch Knopf
+switch_variable = StringVar(window)
+switch_variable.set("Caesar Verschlüsselung")
+
+switch_menu = OptionMenu(window, switch_variable, "Caesar Verschlüsselung", "TDES")
+switch_menu.configure(bg=button_color, fg=button_text_color, font=("Arial", 12))
+switch_menu.grid(row=0, column=2, padx=10, pady=10, sticky="w")
+
+# w im trace method heisst write
+switch_variable.trace('w', switch_modes)
 
 window.mainloop()
