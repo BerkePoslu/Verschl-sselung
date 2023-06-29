@@ -24,13 +24,10 @@ def caesarVerschlusselung(string, verschiebung):
     for char in string:
         # id liste appende
         normal_list.append(char)
-        print(normal_list)
         # translate
         modified_letter = [char.translate(translation_table) for i in normal_list]
         # das [0] burcht es suscht isch es komisch
         modified_list.append(modified_letter[0])
-
-        print(modified_list)
 
     # liste id string konvertiere
     modified_string = "".join(modified_list)
@@ -51,13 +48,10 @@ def caesarVerschlusselung_rev(string, verschiebung):
     for char in string:
         # id liste appende
         normal_list.append(char)
-        print(normal_list)
         # translate
         modified_letter = [char.translate(translation_table) for i in normal_list]
         # das [0] burcht es suscht isch es komisch
         modified_list.append(modified_letter[0])
-
-        print(modified_list)
 
     # liste id string konvertiere
     modified_string = "".join(modified_list)
