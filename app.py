@@ -2,7 +2,18 @@ import tkinter as tk
 
 alphabet = "abcdefghijklmnopqrstuvwxyzäöü"
 
-mode = False
+mode = True
+modusStatus = "Caesar"
+
+# Erjon: das wechselt de Wert für mode False isch 3DES funtion True isch Caesar funktion
+def toggle_mode():
+    if mode == False:
+        mode = True
+        modusStatus = "Caesar"
+    else: 
+        mode == False
+        modusStatus = "3DES"
+
 
 # en kurze funktion für de caesar verschlüsselig
 def caesarVerschlusselung(string, verschiebung):
@@ -163,6 +174,14 @@ def decrypt_message():
         decrypted_message = TripleDataEncryptionStandards_rev(message, verschiebung)
     decrypted_result.configure(text=decrypted_message)
 
+# Erjon: das wechselt de Wert für mode False isch 3DES funtion True isch Caesar funktion
+def toggle_mode():
+    if mode == False:
+        mode = True
+        modusStatus = "Caesar"
+    else: 
+        mode == False
+        modusStatus = "3DES"
 
 # Erjon: Bestimmt dfrabene fürs GUI
 primary_color = "#293E4D"
@@ -198,6 +217,10 @@ entry2.grid(row=1, column=1, padx=10, pady=10)
 
 
 # Erjon: Erstellt Knöpf
+
+modus_button = tk.Button(window, text = modusStatus, command=toggle_mode, bg=button_color, fg=button_text_color, font=("Arial", 12))
+modus_button.grid(row=6, column=0, columnspan=2, padx=10, pady=10, sticky="we")
+
 encrypt_button = tk.Button(window, text="Encrypt", command=encrypt_message, bg=button_color, fg=button_text_color, font=("Arial", 12))
 encrypt_button.grid(row=2, column=0, columnspan=2, padx=10, pady=10, sticky="we")
 
@@ -212,6 +235,15 @@ encrypted_result.grid(row=3, column=1, padx=10, pady=10, sticky="w")
 # Feld für das Decryption bi Encryption
 decrypted_result = tk.Label(window, width=40, height=5, bg=primary_color, fg=secondary_color, font=("Arial", 12))
 decrypted_result.grid(row=5, column=1, padx=10, pady=10, sticky="w")
+
+# Erjon: das wechselt de Wert für mode False isch 3DES funtion True isch Caesar funktion
+def toggle_mode():
+    if mode == False:
+        mode = True
+        modusStatus = "Caesar"
+    else: 
+        mode == False
+        modusStatus = "3DES"
 
 # Function to copy encrypted text to the message field
 def copy_encrypted_to_message():
