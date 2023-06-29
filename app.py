@@ -8,7 +8,7 @@ caesar_mode = True
 
 ### Verschluesslungsfunktionen
 
-# en kurze funktion für de caesar verschlüsselig
+## en kurze funktion für de caesar verschlüsselig
 def caesarVerschlusselung(string, verschiebung):
     # de verschiebig: tued die erste (a - d, b - c usw) mache und die zweite (:verschiebig) lösst das problem
     # für die ersti 3 (a, b, c) (mit verschiebig 4 zb)
@@ -38,7 +38,7 @@ def caesarVerschlusselung(string, verschiebung):
     return modified_string
 
 
-# Caesar Verschluesselung-entschluessung
+## Caesar Verschluesselung-entschluessung
 def caesarVerschlusselung_rev(string, verschiebung):
     shifted_alphabet = alphabet[verschiebung:] + alphabet[:verschiebung]
     # mir mached alles glich eif reverse
@@ -64,7 +64,7 @@ def caesarVerschlusselung_rev(string, verschiebung):
 
     return modified_string
 
-# TDES Verschluesselung
+## TDES Verschluesselung
 def TripleDataEncryptionStandards(String, Verschiebung):
 
     message = entry.get("1.0", "end-1c")
@@ -100,7 +100,7 @@ def TripleDataEncryptionStandards(String, Verschiebung):
 
     return test_string3
 
-# TDES Verschluesselung-entschluesselung
+## TDES Verschluesselung-entschluesselung
 def TripleDataEncryptionStandards_rev(String, Verschiebung):
 
     message = entry.get("1.0", "end-1c")
@@ -175,7 +175,7 @@ def decrypt_message():
 
 ## switch menu funktion
 
-# *args will mir tuend unbestimmti ahzahl vo arguments verschicke 
+# *args will mir tuend unbestimmti ahzahl vo arguments verschicked
 def switch_modes(*args):
     global caesar_mode
     selected_option = switch_variable.get()
@@ -195,7 +195,7 @@ button_text_color = "#FFFFFF"
 
 # Erjon: Machts Window fürs tkinter
 window = tk.Tk()
-window.title("Tkinter GUI")
+window.title("Verschlüsselung von Berke und Erjon")
 window.geometry("800x800")
 window.configure(bg=primary_color)
 
