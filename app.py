@@ -1,5 +1,5 @@
-import tkinter as tk
 from tkinter import *
+import customtkinter as tk
 import random
 
 alphabet = "abcdefghijklmnopqrstuvwxyzäöü"
@@ -12,7 +12,7 @@ caesar_mode = True
 ## en kurze funktion für de caesar verschlüsselig
 def caesarVerschlusselung(string, verschiebung):
     # de verschiebig: tued die erste (a - d, b - c usw) mache und die zweite (:verschiebig) lösst das problem
-    # für die ersti 3 (a, b, c) (mit verschiebig 4 zb)
+    # für die erstiDreifachEntschlüsselungsmodus (a, b, c) (mit verschiebig 4 zb)
     shifted_alphabet = alphabet[verschiebung:] + alphabet[:verschiebung]
     # mir mached mit translation table en comparison table fürs normale alphabet zum geheimschrift alphabet
     # upper() wird verwendet um die gröss gschriebeni buechstabe au zu verschlüssle
@@ -148,7 +148,8 @@ def encrypt_message():
     else:
         verschiebung = entry2.get("1.0", "end-1c") 
         encrypted_message = TripleDataEncryptionStandards(message, verschiebung)
-    encrypted_result.configure(text=encrypted_message)
+    encrypted_result.delete("1.0", "end")
+    encrypted_result.insert("1.0", encrypted_message)
 
 
 
@@ -166,7 +167,8 @@ def decrypt_message():
     else:
         verschiebung = entry2.get("1.0", "end-1c")
         decrypted_message = TripleDataEncryptionStandards_rev(message, verschiebung)
-    decrypted_result.configure(text=decrypted_message)
+    decrypted_result.delete("1.0", "end")
+    decrypted_result.insert("1.0", decrypted_message)
 
 ## switch menu funktion
 
@@ -174,7 +176,7 @@ def decrypt_message():
 def switch_modes(*args):
     global caesar_mode
     selected_option = switch_variable.get()
-    if selected_option == "TDES":
+    if selected_option == "3DES":
         caesar_mode=False
     else:
         caesar_mode=True
@@ -183,52 +185,49 @@ def switch_modes(*args):
 ### GUI
 
 # Erjon: Bestimmt dfrabene fürs GUI
-primary_color = "#293E4D"
-secondary_color = "#F0F0F0"
-button_color = "#447DBA"
-button_text_color = "#FFFFFF"
+tk.set_appearance_mode("dark")
+tk.set_default_color_theme("green")
 
 # Erjon: Machts Window fürs tkinter
-window = tk.Tk()
+window = tk.CTk()
 window.title("Verschlüsselung von Berke und Erjon")
-window.geometry("800x800")
-window.configure(bg=primary_color)
+window.geometry("900x700")
 
 # Erjon: Erstellt Konfigurations Labels
-label = tk.Label(window, text="Message", bg=primary_color, fg=secondary_color, font=("Arial", 12))
+label = tk.CTkLabel(window, text="Message")
 label.grid(row=0, column=0, padx=10, pady=10, sticky="e")
 
-label2 = tk.Label(window, text="Verschiebung", bg=primary_color, fg=secondary_color, font=("Arial", 12))
+label2 = tk.CTkLabel(window, text="Verschiebung")
 label2.grid(row=1, column=0, padx=10, pady=10, sticky="e")
 
-encrypt_label = tk.Label(window, text="Encrypted Message:", bg=primary_color, fg=secondary_color, font=("Arial", 12))
+encrypt_label = tk.CTkLabel(window, text="Encrypted Message:")
 encrypt_label.grid(row=3, column=0, padx=10, pady=10, sticky="e")
 
-decrypt_label = tk.Label(window, text="Decrypted Message:", bg=primary_color, fg=secondary_color, font=("Arial", 12))
+decrypt_label = tk.CTkLabel(window, text="Decrypted Message:")
 decrypt_label.grid(row=5, column=0, padx=10, pady=10, sticky="e")
 
 # Erjon: Erstehlt Konfigurations eingabe Felder
-entry = tk.Text(window, width=30, height=5, font=("Arial", 12))
+entry = tk.CTkTextbox(window, width=400)
 entry.grid(row=0, column=1, padx=10, pady=10)
 
-entry2 = tk.Text(window, width=30, height=3, font=("Arial", 12))
+entry2 = tk.CTkTextbox(window, width=400, height=10)
 entry2.grid(row=1, column=1, padx=10, pady=10)
 
 
 # Erjon: Erstellt Knöpf
-encrypt_button = tk.Button(window, text="Encrypt", command=encrypt_message, bg=button_color, fg=button_text_color, font=("Arial", 12))
+encrypt_button = tk.CTkButton(window, text="Encrypt", command=encrypt_message)
 encrypt_button.grid(row=2, column=0, columnspan=2, padx=10, pady=10, sticky="we")
 
-decrypt_button = tk.Button(window, text="Decrypt", command=decrypt_message, bg=button_color, fg=button_text_color, font=("Arial", 12))
+decrypt_button = tk.CTkButton(window, text="Decrypt", command=decrypt_message)
 decrypt_button.grid(row=4, column=0, columnspan=2, padx=10, pady=10, sticky="we")
 
 
 # Feld für das Ergebnis bi Encryption
-encrypted_result = tk.Label(window, width=40, height=5, bg=primary_color, fg=secondary_color, font=("Arial", 12))
+encrypted_result = tk.CTkTextbox(window, width=400, height=100)
 encrypted_result.grid(row=3, column=1, padx=10, pady=10, sticky="w")
 
 # Feld für das Decryption bi Encryption
-decrypted_result = tk.Label(window, width=40, height=5, bg=primary_color, fg=secondary_color, font=("Arial", 12))
+decrypted_result = tk.CTkTextbox(window, width=400, height=100)
 decrypted_result.grid(row=5, column=1, padx=10, pady=10, sticky="w")
 
 # Erjon: Key generator 
@@ -239,35 +238,30 @@ def key_gen():
     
 # Function to copy encrypted text to the message field
 def copy_encrypted_to_message():
-    encrypted_text = encrypted_result["text"]
+    encrypted_text = encrypted_result.get("1.0", "end")
     entry.delete("1.0", "end")
     entry.insert("1.0", encrypted_text)
 
 def copy_decrypted_to_message():
-    decrypted_text = decrypted_result["text"]
+    decrypted_text = decrypted_result.get("1.0", "end")
     entry.delete("1.0", "end")
     entry.insert("1.0", decrypted_text)
 
 # Erjon: tuet de Schlüssel generiere
-gen_button = tk.Button(window, text="Generate Key", command=key_gen, bg=button_color, fg=button_text_color, font=("Arial", 12))
+gen_button = tk.CTkButton(window, text="Generate Key", command=key_gen)
 gen_button.grid(row=1, column=2, columnspan=2, padx=10, pady=10, sticky="we")
 
 # Erställt en Knopf zum de text ufs feld obe zum witer bruche. 
-copy_button = tk.Button(window, text="Copy", command=copy_encrypted_to_message, bg=button_color, fg=button_text_color, font=("Arial", 12))
+copy_button = tk.CTkButton(window, text="Copy", command=copy_encrypted_to_message)
 copy_button.grid(row=3, column=2, padx=10, pady=10, sticky="w")
 
-copy_button = tk.Button(window, text="Copy", command=copy_decrypted_to_message, bg=button_color, fg=button_text_color, font=("Arial", 12))
+copy_button = tk.CTkButton(window, text="Copy", command=copy_decrypted_to_message)
 copy_button.grid(row=5, column=2, padx=10, pady=10, sticky="w")
 
+switch_variable = tk.StringVar(value="off")
 # Mode switch Knopf
-switch_variable = StringVar(window)
-switch_variable.set("Caesar Verschlüsselung")
-
-switch_menu = OptionMenu(window, switch_variable, "Caesar Verschlüsselung", "3DES")
-switch_menu.configure(bg=button_color, fg=button_text_color, font=("Arial", 12))
+switch_menu = tk.CTkSwitch(window, text="Dreifach-Entschlüsselungsmodus", command=switch_modes, onvalue="3DES", offvalue="off", variable=switch_variable)
 switch_menu.grid(row=0, column=2, padx=10, pady=10, sticky="w")
 
-# w im trace method heisst write
-switch_variable.trace('w', switch_modes)
 
 window.mainloop()
