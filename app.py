@@ -1,21 +1,15 @@
 import tkinter as tk
+from tkinter import *
+import random
 
 alphabet = "abcdefghijklmnopqrstuvwxyzäöü"
 
-mode = True
-modusStatus = "Caesar"
+# TDES oder Caesar switch-boolean
+caesar_mode = True
 
-# Erjon: das wechselt de Wert für mode False isch 3DES funtion True isch Caesar funktion
-def toggle_mode():
-    if mode == False:
-        mode = True
-        modusStatus = "Caesar"
-    else: 
-        mode == False
-        modusStatus = "3DES"
+### Verschluesslungsfunktionen
 
-
-# en kurze funktion für de caesar verschlüsselig
+## en kurze funktion für de caesar verschlüsselig
 def caesarVerschlusselung(string, verschiebung):
     # de verschiebig: tued die erste (a - d, b - c usw) mache und die zweite (:verschiebig) lösst das problem
     # für die ersti 3 (a, b, c) (mit verschiebig 4 zb)
@@ -31,13 +25,10 @@ def caesarVerschlusselung(string, verschiebung):
     for char in string:
         # id liste appende
         normal_list.append(char)
-        print(normal_list)
         # translate
         modified_letter = [char.translate(translation_table) for i in normal_list]
         # das [0] burcht es suscht isch es komisch
         modified_list.append(modified_letter[0])
-
-        print(modified_list)
 
     # liste id string konvertiere
     modified_string = "".join(modified_list)
@@ -45,7 +36,7 @@ def caesarVerschlusselung(string, verschiebung):
     return modified_string
 
 
-
+## Caesar Verschluesselung-entschluessung
 def caesarVerschlusselung_rev(string, verschiebung):
     shifted_alphabet = alphabet[verschiebung:] + alphabet[:verschiebung]
     # mir mached alles glich eif reverse
@@ -58,30 +49,28 @@ def caesarVerschlusselung_rev(string, verschiebung):
     for char in string:
         # id liste appende
         normal_list.append(char)
-        print(normal_list)
         # translate
         modified_letter = [char.translate(translation_table) for i in normal_list]
         # das [0] burcht es suscht isch es komisch
         modified_list.append(modified_letter[0])
-
-        print(modified_list)
 
     # liste id string konvertiere
     modified_string = "".join(modified_list)
 
     return modified_string
 
+## TDES Verschluesselung
 def TripleDataEncryptionStandards(String, Verschiebung):
 
     message = entry.get("1.0", "end-1c")
     verschiebung = entry2.get("1.0", "end-1c")
     
     # Erjon: de input vo de zahl wird in 3 teil ufgteilt
-    part1, part2, part3 = verschiebung.split(' ')
-
-    key1 = int(part1)
-    key2 = int(part2)
-    key3 = int(part3)
+    part_length = len(verschiebung) // 3
+    
+    key1 = int(verschiebung[:part_length])
+    key2 = int(verschiebung[part_length:2*part_length])
+    key3 = int(verschiebung[2*part_length:])
 
     # Erjon: will wend zahl grösser isch als ahzal symbol im alphabet 
     #        tuets die zahl um 29(ahzahl symbol im alphabet) verchlinere 
@@ -106,17 +95,18 @@ def TripleDataEncryptionStandards(String, Verschiebung):
 
     return test_string3
 
+## TDES Verschluesselung-entschluesselung
 def TripleDataEncryptionStandards_rev(String, Verschiebung):
 
     message = entry.get("1.0", "end-1c")
     verschiebung = entry2.get("1.0", "end-1c")
     
     # Erjon: de input vo de zahl wird in 3 teil ufgteilt
-    part1, part2, part3 = verschiebung.split(' ')
-
-    key1 = int(part1)
-    key2 = int(part2)
-    key3 = int(part3)
+    part_length = len(verschiebung) // 3
+    
+    key1 = int(verschiebung[:part_length])
+    key2 = int(verschiebung[part_length:2*part_length])
+    key3 = int(verschiebung[2*part_length:])
 
     # Erjon: will wend zahl grösser isch als ahzal symbol im alphabet 
     #        tuets die zahl um 29(ahzahl symbol im alphabet) verchlinere 
@@ -141,11 +131,14 @@ def TripleDataEncryptionStandards_rev(String, Verschiebung):
 
     return test_string3
 
-# encrypte knopf funktion
+### knopf funktione
+
+## encrypt funktion
+ 
 # 1.0 isch in tkinter erste character und end-1c isch de character bevor newline /n
 def encrypt_message():
     message = entry.get("1.0", "end-1c")
-    if mode == True:
+    if caesar_mode == True:
         verschiebung = int(entry2.get("1.0", "end-1c"))
         # Erjon: Das sorgt dafür das de Key nie grösser als 29 isch will denn verschiebig nöd ghat. 
         if verschiebung >= 29:
@@ -159,10 +152,11 @@ def encrypt_message():
 
 
 
-# nur decrypte wenn de encrypted im message feld staht
+## decrypt funktion
+
 def decrypt_message():
     message = entry.get("1.0", "end-1c")
-    if mode == True:
+    if caesar_mode == True:
         verschiebung = int(entry2.get("1.0", "end-1c"))
         # Erjon: Das sorgt dafür das de Key nie grösser als 29 isch will denn verschiebig nöd ghat. 
         if verschiebung >= 29:
@@ -174,14 +168,19 @@ def decrypt_message():
         decrypted_message = TripleDataEncryptionStandards_rev(message, verschiebung)
     decrypted_result.configure(text=decrypted_message)
 
-# Erjon: das wechselt de Wert für mode False isch 3DES funtion True isch Caesar funktion
-def toggle_mode():
-    if mode == False:
-        mode = True
-        modusStatus = "Caesar"
-    else: 
-        mode == False
-        modusStatus = "3DES"
+## switch menu funktion
+
+# *args will mir tuend unbestimmti ahzahl vo arguments verschicked
+def switch_modes(*args):
+    global caesar_mode
+    selected_option = switch_variable.get()
+    if selected_option == "TDES":
+        caesar_mode=False
+    else:
+        caesar_mode=True
+
+
+### GUI
 
 # Erjon: Bestimmt dfrabene fürs GUI
 primary_color = "#293E4D"
@@ -189,10 +188,10 @@ secondary_color = "#F0F0F0"
 button_color = "#447DBA"
 button_text_color = "#FFFFFF"
 
-# Erjon: Machts Window fürs tkInter
+# Erjon: Machts Window fürs tkinter
 window = tk.Tk()
-window.title("Tkinter GUI")
-window.geometry("700x700")
+window.title("Verschlüsselung von Berke und Erjon")
+window.geometry("800x800")
 window.configure(bg=primary_color)
 
 # Erjon: Erstellt Konfigurations Labels
@@ -217,10 +216,6 @@ entry2.grid(row=1, column=1, padx=10, pady=10)
 
 
 # Erjon: Erstellt Knöpf
-
-modus_button = tk.Button(window, text = modusStatus, command=toggle_mode, bg=button_color, fg=button_text_color, font=("Arial", 12))
-modus_button.grid(row=6, column=0, columnspan=2, padx=10, pady=10, sticky="we")
-
 encrypt_button = tk.Button(window, text="Encrypt", command=encrypt_message, bg=button_color, fg=button_text_color, font=("Arial", 12))
 encrypt_button.grid(row=2, column=0, columnspan=2, padx=10, pady=10, sticky="we")
 
@@ -236,15 +231,12 @@ encrypted_result.grid(row=3, column=1, padx=10, pady=10, sticky="w")
 decrypted_result = tk.Label(window, width=40, height=5, bg=primary_color, fg=secondary_color, font=("Arial", 12))
 decrypted_result.grid(row=5, column=1, padx=10, pady=10, sticky="w")
 
-# Erjon: das wechselt de Wert für mode False isch 3DES funtion True isch Caesar funktion
-def toggle_mode():
-    if mode == False:
-        mode = True
-        modusStatus = "Caesar"
-    else: 
-        mode == False
-        modusStatus = "3DES"
-
+# Erjon: Key generator 
+def key_gen():
+    random_number = random.randint(100000000, 999999999)
+    entry2.delete("1.0", "end")
+    entry2.insert("1.0", random_number)
+    
 # Function to copy encrypted text to the message field
 def copy_encrypted_to_message():
     encrypted_text = encrypted_result["text"]
@@ -255,6 +247,11 @@ def copy_decrypted_to_message():
     decrypted_text = decrypted_result["text"]
     entry.delete("1.0", "end")
     entry.insert("1.0", decrypted_text)
+
+# Erjon: tuet de Schlüssel generiere
+gen_button = tk.Button(window, text="Generate Key", command=key_gen, bg=button_color, fg=button_text_color, font=("Arial", 12))
+gen_button.grid(row=1, column=2, columnspan=2, padx=10, pady=10, sticky="we")
+
 # Erställt en Knopf zum de text ufs feld obe zum witer bruche. 
 copy_button = tk.Button(window, text="Copy", command=copy_encrypted_to_message, bg=button_color, fg=button_text_color, font=("Arial", 12))
 copy_button.grid(row=3, column=2, padx=10, pady=10, sticky="w")
@@ -262,5 +259,15 @@ copy_button.grid(row=3, column=2, padx=10, pady=10, sticky="w")
 copy_button = tk.Button(window, text="Copy", command=copy_decrypted_to_message, bg=button_color, fg=button_text_color, font=("Arial", 12))
 copy_button.grid(row=5, column=2, padx=10, pady=10, sticky="w")
 
+# Mode switch Knopf
+switch_variable = StringVar(window)
+switch_variable.set("Caesar Verschlüsselung")
+
+switch_menu = OptionMenu(window, switch_variable, "Caesar Verschlüsselung", "3DES")
+switch_menu.configure(bg=button_color, fg=button_text_color, font=("Arial", 12))
+switch_menu.grid(row=0, column=2, padx=10, pady=10, sticky="w")
+
+# w im trace method heisst write
+switch_variable.trace('w', switch_modes)
 
 window.mainloop()
